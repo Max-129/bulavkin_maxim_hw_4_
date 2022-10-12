@@ -2,12 +2,13 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
-    public static int bossHealth = 700;
-    public static int bossDamage = 50;
+    public static int bossHealth = 1000;
+    public static int bossDamage = 70;
     public static String bossDefenceType;
-    public static int[] heroesHealth = {250, 270, 280, 260, 500};
-    public static int[] heroesDamage = {25, 20, 15, 5, 10};
-    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem"};
+    public static int[] heroesHealth = {250, 270, 280, 260, 500, 200, 240, 400};
+    public static int[] heroesDamage = {25, 20, 15, 5, 7, 20, 5, 10};
+    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic",
+            "Golem", "Thor", "Lucky", "Berserk"};
     public static int roundNumber = 0;
 
     public static void main(String[] args) {
@@ -22,7 +23,10 @@ public class Main {
         chooseBossDefence();
         bossHits();
         heroesHit();
+        berserkShoot();
+        stun();
         healingHeroes();
+        dodge();
         golemDefense();
         printStatistics();
 
@@ -104,29 +108,83 @@ public class Main {
             }
         }
     }
-    public static void healingHeroes(){
+
+    public static void healingHeroes() {
         for (int i = 0; i < heroesHealth.length; i++) {
             if (i == 3) {
                 continue;
             }
-                if (heroesHealth[i] > 0 && heroesHealth[i] <= 100) {
-                    heroesHealth[i] = heroesHealth[i] + 20;
-                    System.out.println("Медик вылечел героев ");
-                    break;
+            if (heroesHealth[i] > 0 && heroesHealth[i] <= 100) {
+                heroesHealth[i] = heroesHealth[i] + 20;
+                System.out.println("Медик вылечел героев ");
+                break;
 
-                }
             }
         }
-            public static void golemDefense(){
-                for (int i = 0; i < heroesHealth.length; i++) {
-                    if (heroesHealth[4] > 0 && heroesHealth[i] > 0 && heroesHealth[4] != heroesHealth[i]) {
-                        heroesHealth[i] = heroesHealth[i] + bossDamage / 5;
-                        heroesHealth[4] -= bossDamage / 5;
-                        System.out.println("Голем защитил героев");
-                    }
-                }
+    }
+
+    public static void golemDefense() {
+        for (int i = 0; i < heroesHealth.length; i++) {
+            if (heroesHealth[4] > 0 && heroesHealth[i] > 0 && heroesHealth[4] != heroesHealth[i]) {
+                heroesHealth[i] = heroesHealth[i] + bossDamage / 5;
+                heroesHealth[4] -= bossDamage / 5;
+                System.out.println("Голем защитил героев");
+
+
             }
         }
+    }
+
+    public static void dodge() {
+        Random random = new Random();
+        int randomEvasion = random.nextInt(4) + 1;
+        switch (randomEvasion) {
+            case 1:
+                heroesHealth[6] = heroesHealth[6] + bossDamage;
+                System.out.println("Герой Lucky увернулся!");
+            case 2:
+
+            case 3:
+
+            case 4:
+
+
+        }
+    }
+
+    public static void stun() {
+        Random random = new Random();
+        boolean stun = random.nextBoolean();
+        if (stun) {
+            bossDamage = 0;
+            System.out.println("Босс был оглушен!");
+        } else {
+            bossDamage = 50;
+        }
+    }
+
+
+    public static void berserkShoot() {
+        Random random = new Random();
+        int randomDamage = random.nextInt(15) + 1;
+        int randomC = random.nextInt(3) + 1;
+        if (heroesHealth[7] > 0 && bossHealth > 0) {
+            switch (randomC) {
+                case 1:
+                    heroesDamage[7] = (heroesDamage[7] + bossDamage) - randomDamage;
+                    System.out.println("У Берсерка критический урон!");
+                    System.out.println("Потери при увеличении урона Берсерка " + randomDamage);
+                    break;
+                case 2:
+                    bossDamage = 50;
+                    break;
+                case 3:
+                    bossDamage = 50;
+                    break;
+            }
+        }
+    }
+}
 
 
 
